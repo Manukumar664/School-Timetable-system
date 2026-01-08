@@ -503,7 +503,7 @@ import HolidayCalendar from "../components/HolidayCalendar";
 import TeacherRequestView from "../components/TeacherRequestView";
 
 export default function TeacherDashboard() {
-  const teacherName = "Mr. Sharma";
+  const teacherName = "Mr.Sharma";
   const userRole = "teacher";
   const teacherId = localStorage.getItem("userId");
 
@@ -676,91 +676,81 @@ export default function TeacherDashboard() {
         <main className="flex-1 p-4 sm:p-6 overflow-auto">
           {loading && <p className="text-gray-400">Loading...</p>}
           {error && <p className="text-red-500">{error}</p>}
+{/* ===================== MANAGE STUDENTS ===================== */}
+{activePage === "manage-student" && (
+  <section className="bg-gray-900 p-6 rounded-2xl shadow-lg">
+    <h2 className="text-2xl font-bold mb-6 text-cyan-400">👩‍🎓 My Students</h2>
 
-          {/* ===================== MANAGE STUDENTS ===================== */}
-          {activePage === "manage-student" && (
-            <section className="bg-gray-900 p-4 sm:p-6 rounded-2xl shadow-lg overflow-x-auto">
-              <h2 className="text-2xl font-bold mb-4">👩‍🎓 My Students</h2>
-              <table className="min-w-full text-center border border-gray-700 rounded-xl">
-                <thead className="bg-gray-800">
-                  <tr>
-                    <th className="p-2">Name</th>
-                    <th className="p-2">Email</th>
-                    <th className="p-2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {students.length > 0 ? (
-                    students.map((s) => (
-                      <tr key={s._id} className="hover:bg-gray-700">
-                        {editingId === s._id ? (
-                          <>
-                            <td>
-                              <input
-                                value={formData.name}
-                                onChange={(e) =>
-                                  setFormData({ ...formData, name: e.target.value })
-                                }
-                                className="w-full px-2 py-1 bg-gray-800 border border-gray-600 rounded"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                value={formData.email}
-                                onChange={(e) =>
-                                  setFormData({ ...formData, email: e.target.value })
-                                }
-                                className="w-full px-2 py-1 bg-gray-800 border border-gray-600 rounded"
-                              />
-                            </td>
-                            <td className="flex justify-center gap-2">
-                              <button
-                                onClick={() => handleStudentFormSubmit(s._id)}
-                                className="bg-green-600 px-3 py-1 rounded"
-                              >
-                                Save
-                              </button>
-                              <button
-                                onClick={() => setEditingId(null)}
-                                className="bg-gray-600 px-3 py-1 rounded"
-                              >
-                                Cancel
-                              </button>
-                            </td>
-                          </>
-                        ) : (
-                          <>
-                            <td>{s.name}</td>
-                            <td>{s.email}</td>
-                            <td className="flex justify-center gap-2">
-                              <button
-                                onClick={() => handleStudentEditClick(s)}
-                                className="bg-green-600 px-3 py-1 rounded"
-                              >
-                                Edit
-                              </button>
-                              <button
-                                onClick={() => handleStudentDelete(s._id)}
-                                className="bg-red-600 px-3 py-1 rounded"
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          </>
-                        )}
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={3} className="p-4 text-gray-400">
-                        No students found
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </section>
-          )}
+    {/* For small screens, use cards */}
+    <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      {students.length > 0 ? (
+        students.map((s) => (
+          <div
+            key={s._id}
+            className="bg-gray-950 p-4 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300"
+          >
+            {editingId === s._id ? (
+              <>
+                <input
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                  className="w-full mb-2 px-3 py-2 rounded border border-gray-600 bg-gray-800"
+                  placeholder="Name"
+                />
+                <input
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  className="w-full mb-2 px-3 py-2 rounded border border-gray-600 bg-gray-800"
+                  placeholder="Email"
+                />
+                <div className="flex justify-between mt-2">
+                  <button
+                    onClick={() => handleStudentFormSubmit(s._id)}
+                    className="bg-green-600 px-4 py-2 rounded hover:bg-green-700 transition"
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={() => setEditingId(null)}
+                    className="bg-gray-600 px-4 py-2 rounded hover:bg-gray-700 transition"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <h3 className="text-lg font-semibold mb-1">{s.name}</h3>
+                <p className="text-gray-400 mb-2">{s.email}</p>
+                <div className="flex justify-between mt-2">
+                  <button
+                    onClick={() => handleStudentEditClick(s)}
+                    className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 transition"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleStudentDelete(s._id)}
+                    className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 transition"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        ))
+      ) : (
+        <p className="text-gray-400 col-span-full">No students found</p>
+      )}
+    </div>
+  </section>
+)}
+
 
           {/* ===================== VIEW TIMETABLE + PERIOD CHANGE ===================== */}
           {activePage === "view-timetable" && (
@@ -920,11 +910,27 @@ export default function TeacherDashboard() {
           )}
 
           {/* ===================== HOLIDAYS ===================== */}
-          {activePage === "view-holiday" && (
-            <section className="mt-4">
-              <HolidayCalendar userRole={userRole} />
-            </section>
-          )}
+         {activePage === "view-holiday" && (
+  <section className="bg-gray-900 p-4 sm:p-6 md:p-8 rounded-2xl shadow-lg">
+    {/* Title */}
+    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 text-yellow-400 flex items-center gap-2">
+      📅 Holidays / Vacations
+    </h2>
+
+    {/* Calendar wrapper */}
+    <div className="bg-gray-950 p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-auto">
+      <HolidayCalendar userRole={userRole} />
+    </div>
+
+    {/* Optional note */}
+    <p className="mt-4 text-gray-400 text-sm sm:text-base">
+      Note: All official holidays and vacations are listed above.
+    </p>
+  </section>
+)}
+
+
+          
         </main>
       </div>
     </div>

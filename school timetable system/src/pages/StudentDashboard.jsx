@@ -338,14 +338,25 @@ export default function StudentDashboard() {
         );
 
       case "view-holiday":
-        return (
-          <div className="bg-black p-4 md:p-6 rounded-xl">
-            <h3 className="text-xl md:text-2xl font-bold mb-4">
-              📅 Holidays
-            </h3>
-            <HolidayCalendar userRole="student" />
-          </div>
-        );
+  return (
+    <section className="bg-gray-900 p-4 sm:p-6 md:p-8 rounded-2xl shadow-lg">
+      {/* Title */}
+      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 text-yellow-400 flex items-center gap-2">
+        📅 Holidays / Vacations
+      </h2>
+
+      {/* Calendar wrapper */}
+      <div className="bg-gray-950 p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-auto">
+        <HolidayCalendar userRole="student" />
+      </div>
+
+      {/* Optional note */}
+      <p className="mt-4 text-gray-400 text-sm sm:text-base">
+        Note: All official holidays and vacations are listed above.
+      </p>
+    </section>
+  );
+
 
       case "view-attendance":
         return (
