@@ -580,8 +580,8 @@ const handleTeacherFormSubmit = async (id) => {
               <td className="p-2 border">
                 {row.slot3.subject} <br /> {row.slot3.time}
               </td>
-              <td className="p-2 border">{row.className}</td>
-              <td className="p-2 border">{row.section}</td>
+              <td className="p-2 border">{row.classRef.className}</td>
+              <td className="p-2 border">{row.classRef.section}</td>
               <td className="p-2 border flex justify-center gap-2">
                 <button
                   onClick={() => handleEditClick(row)}
