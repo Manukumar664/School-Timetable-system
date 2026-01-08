@@ -5,7 +5,7 @@ const User = require("../models/User");
 const { protect } = require("../middlewares/authMiddleware");
 const Student = require("../models/Student");
 const Class = require("../models/Class");
-// 🟢 Get all timetable entries
+// 🟢 Get all timetable entries       
 // router.get("/",protect, async (req, res) => {
 //   try {
    
@@ -52,14 +52,7 @@ router.post("/createTable", async (req, res) => {
     if (!classData) {
       classData = new Class({ className, section });
       await classData.save();
-    }
-    // const newEntry = new Timetable({
-    //   day,
-    //   slot1,
-    //   slot2,
-    //   slot3,
-    //   classRef: classData._id
-    // });
+    }    
     const newEntry=await Timetable.create({
       day,
       slot1,
@@ -82,8 +75,7 @@ router.post("/", async (req, res) => {
     classRef
    });
   try {
-     const saved = await newEntry.save();
-     
+     const saved = await newEntry.save();     
     res.status(201).json(saved);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -111,8 +103,7 @@ router.get("/assignedClass", async (req, res) => {
     const timetable = await Timetable.find()
       .populate("classRef", "className section")
       .exec();
-    const filtered = timetable.filter((t) => t.classRef != null);
-  
+    const filtered = timetable.filter((t) => t.classRef != null);  
     return res.json({ success: true, data: timetable });
   } catch (error) {
     return res.json({ success: false, message: error.message });
