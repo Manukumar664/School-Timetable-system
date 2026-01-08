@@ -527,6 +527,13 @@ export default function TeacherDashboard() {
   // Mobile sidebar toggle
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Close sidebar on menu click (mobile)
+  useEffect(() => {
+    const handleCloseSidebar = () => setSidebarOpen(false);
+    document.addEventListener("closeSidebar", handleCloseSidebar);
+    return () => document.removeEventListener("closeSidebar", handleCloseSidebar);
+  }, []);
+
   // Fetch unassigned classes
   useEffect(() => {
     const fetchUnassignedClasses = async () => {
@@ -658,7 +665,10 @@ export default function TeacherDashboard() {
             onClick={() => setSidebarOpen(false)}
           ></div>
           <div className="relative flex-1 max-w-xs w-full bg-gray-900 border-r border-gray-700">
-            <Sidebar setActivePage={setActivePage} userRole={userRole} />
+            <Sidebar
+              setActivePage={setActivePage}
+              userRole={userRole}
+            />
           </div>
         </div>
       )}
