@@ -1,10 +1,10 @@
 import axios from "axios";
 const API = axios.create({
-    baseURL:"https://school-timetable-system-57i0.onrender.com/api",
-     // baseURL:"http://localhost:5000/api",
+   // baseURL:"https://school-timetable-system-57i0.onrender.com/api",
+      baseURL:"http://localhost:5000/api",
   withCredentials: true // backend URL
 });
-// ✅ Attach token to every request
+// ✅ Attach token to every request         
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -12,6 +12,4 @@ API.interceptors.request.use((config) => {
   }
   return config;
 });
-
 export default API;
-
