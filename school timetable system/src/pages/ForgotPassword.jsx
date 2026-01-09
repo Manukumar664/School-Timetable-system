@@ -30,7 +30,7 @@ export default function ForgotPassword() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 sm:px-0"
       style={{
         backgroundImage:
           "url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f')",
@@ -42,20 +42,20 @@ export default function ForgotPassword() {
       <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-[#020024]/70 to-[#090979]/70"></div>
 
       {/* Neon glow */}
-      <div className="absolute w-[420px] h-[420px] bg-pink-500 rounded-full blur-[160px] opacity-30 top-10 left-10"></div>
-      <div className="absolute w-[420px] h-[420px] bg-cyan-400 rounded-full blur-[160px] opacity-30 bottom-10 right-10"></div>
+      <div className="absolute w-72 h-72 sm:w-[420px] sm:h-[420px] bg-pink-500 rounded-full blur-[120px] sm:blur-[160px] opacity-30 top-10 left-10"></div>
+      <div className="absolute w-72 h-72 sm:w-[420px] sm:h-[420px] bg-cyan-400 rounded-full blur-[120px] sm:blur-[160px] opacity-30 bottom-10 right-10"></div>
 
       {/* Card */}
       <div
-        className="relative w-[420px] rounded-3xl 
+        className="relative w-full max-w-md sm:w-[420px] rounded-3xl 
         backdrop-blur-2xl bg-white/10 
         border border-white/30 
         shadow-[0_0_45px_rgba(0,255,255,0.25)]
-        p-9 text-white animate-fadeIn"
+        p-6 sm:p-9 text-white animate-fadeIn"
       >
         {/* Icon */}
         <div className="flex justify-center mb-4">
-          <div className="w-16 h-16 rounded-full 
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full 
           bg-gradient-to-r from-cyan-400 to-pink-500 
           flex items-center justify-center shadow-lg">
             <FaKey size={28} />
@@ -63,14 +63,14 @@ export default function ForgotPassword() {
         </div>
 
         <h2
-          className="text-4xl font-bold text-center mb-2
+          className="text-3xl sm:text-4xl font-bold text-center mb-2
           bg-gradient-to-r from-cyan-300 to-pink-400
           bg-clip-text text-transparent"
         >
           Forgot Password
         </h2>
 
-        <p className="text-sm text-gray-300 text-center mb-6">
+        <p className="text-sm sm:text-base text-gray-300 text-center mb-6">
           Don’t worry! Enter your email and we’ll send a reset link
         </p>
 
@@ -83,7 +83,7 @@ export default function ForgotPassword() {
               placeholder="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-xl 
+              className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-xl 
               bg-white/20 border border-white/30 
               focus:outline-none focus:ring-2 focus:ring-cyan-400 
               placeholder-gray-300"
@@ -93,7 +93,7 @@ export default function ForgotPassword() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-3 py-3 rounded-xl font-semibold tracking-wide
+            className="mt-3 py-3 sm:py-4 rounded-xl font-semibold tracking-wide
             bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400
             hover:scale-[1.03]
             shadow-[0_0_30px_rgba(255,150,100,0.7)]
@@ -120,7 +120,7 @@ export default function ForgotPassword() {
         <div
           onClick={() => navigate("/")}
           className="flex items-center justify-center gap-2 
-          text-sm text-gray-300 mt-6 cursor-pointer 
+          text-sm sm:text-base text-gray-300 mt-6 cursor-pointer 
           hover:text-cyan-300 transition"
         >
           <MdArrowBack />
@@ -130,4 +130,5 @@ export default function ForgotPassword() {
     </div>
   );
 }
+
 
