@@ -1,3 +1,4 @@
+
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
@@ -55,10 +56,15 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+
+    // ✅ Forgot password fields
+    resetPasswordToken: { type: String },
+    resetPasswordExpire: { type: Date },
   },
   { timestamps: true }
 );
 
+// Remove password field from API responses
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
