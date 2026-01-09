@@ -162,7 +162,7 @@ name: "",
 email: "",
 className: "",
 section: "",
-});
+}); 
 // Input change for student form
 const handleStudentFormChange = (e) => {
 setStudentFormData({ ...studentFormData, [e.target.name]: e.target.value });
@@ -589,64 +589,62 @@ const handleTeacherFormSubmit = async (id) => {
     </div>
   </div>
 )}
-
 {/* ================= Students jsx ================= */}
 {activePage === "manage-student" && (
   <>
     {/* ===== Filter by Class & Section ===== */}
-    <div className="mb-4 flex items-center gap-4">
-      <label className="text-cyan-300 font-semibold">Filter by Class:</label>
-      <select
-        value={filterClass}
-        onChange={(e) => setFilterClass(e.target.value)}
-        className="text-white px-3 py-2 rounded bg-cyan-700"
-      >
-        <option value="">All Classes</option>
-        {classes.map((cls) => (
-          <option key={cls} value={cls}>
-            {cls}
-          </option>
-        ))}
-      </select>
-
-      <label className="text-cyan-300 font-semibold">Filter by Section:</label>
-      <select
-        value={filterSection}
-        onChange={(e) => setFilterSection(e.target.value)}
-        className="text-white px-3 py-2 rounded bg-cyan-700"
-      >
-        <option value="">All Sections</option>
-        {sections.map((sec) => (
-          <option key={sec} value={sec}>
-            {sec}
-          </option>
-        ))}
-      </select>
+    <div className="mb-4 flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4">
+      <div className="flex items-center gap-2">
+        <label className="text-cyan-300 font-semibold">Filter by Class:</label>
+        <select
+          value={filterClass}
+          onChange={(e) => setFilterClass(e.target.value)}
+          className="text-white px-3 py-2 rounded bg-cyan-700"
+        >
+          <option value="">All Classes</option>
+          {classes.map((cls) => (
+            <option key={cls} value={cls}>{cls}</option>
+          ))}
+        </select>
+      </div>
+      <div className="flex items-center gap-2">
+        <label className="text-cyan-300 font-semibold">Filter by Section:</label>
+        <select
+          value={filterSection}
+          onChange={(e) => setFilterSection(e.target.value)}
+          className="text-white px-3 py-2 rounded bg-cyan-700"
+        >
+          <option value="">All Sections</option>
+          {sections.map((sec) => (
+            <option key={sec} value={sec}>{sec}</option>
+          ))}
+        </select>
+      </div>
     </div>
 
     {/* ===== Add / Edit Student Form ===== */}
-    <div className="mb-4 bg-gray-900 p-4 rounded">
+    <div className="mb-4 bg-gray-900 p-4 rounded shadow-md">
       <h4 className="text-lg font-semibold mb-2 text-cyan-300">Add / Edit Student</h4>
-      <div className="flex flex-col md:flex-row gap-2">
+      <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
         <input
           placeholder="Name"
           name="name"
           value={studentFormData.name}
           onChange={handleStudentFormChange}
-          className="text-white px-2 py-1 rounded w-full md:w-1/4"
+          className="text-white px-2 py-1 rounded w-full sm:w-1/2 md:w-1/4"
         />
         <input
           placeholder="Email"
           name="email"
           value={studentFormData.email}
           onChange={handleStudentFormChange}
-          className="text-white px-2 py-1 rounded w-full md:w-1/4"
+          className="text-white px-2 py-1 rounded w-full sm:w-1/2 md:w-1/4"
         />
         <select
           name="className"
           value={studentFormData.className}
           onChange={handleStudentFormChange}
-          className="text-white px-2 py-1 rounded w-full md:w-1/4 bg-gray-700"
+          className="text-white px-2 py-1 rounded w-full sm:w-1/2 md:w-1/4 bg-gray-700"
         >
           <option value="">Select Class</option>
           {classes.map((cls) => (
@@ -657,7 +655,7 @@ const handleTeacherFormSubmit = async (id) => {
           name="section"
           value={studentFormData.section}
           onChange={handleStudentFormChange}
-          className="text-white px-2 py-1 rounded w-full md:w-1/4 bg-gray-700"
+          className="text-white px-2 py-1 rounded w-full sm:w-1/2 md:w-1/4 bg-gray-700"
         >
           <option value="">Select Section</option>
           {sections.map((sec) => (
@@ -666,7 +664,7 @@ const handleTeacherFormSubmit = async (id) => {
         </select>
         <button
           onClick={() => handleStudentFormSubmit(studentEditingId)}
-          className="bg-green-600 hover:bg-green-700 px-4 py-1 rounded font-semibold"
+          className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded font-semibold w-full sm:w-auto"
         >
           {studentEditingId ? "Save" : "Add"}
         </button>
@@ -674,9 +672,9 @@ const handleTeacherFormSubmit = async (id) => {
     </div>
 
     {/* ===== Students Table ===== */}
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto rounded shadow-md">
       <table className="min-w-full text-center border border-gray-700">
-        <thead>
+        <thead className="bg-gray-950 text-cyan-300">
           <tr>
             <th className="p-2 border">Name</th>
             <th className="p-2 border">Email</th>
@@ -735,10 +733,10 @@ const handleTeacherFormSubmit = async (id) => {
                         ))}
                       </select>
                     </td>
-                    <td className="p-2 border flex justify-center gap-2">
+                    <td className="p-2 border flex flex-col sm:flex-row justify-center gap-2">
                       <button
                         onClick={() => handleStudentFormSubmit(studentEditingId)}
-                        className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded font-semibold"
+                        className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded font-semibold w-full sm:w-auto"
                       >
                         Save
                       </button>
@@ -750,16 +748,16 @@ const handleTeacherFormSubmit = async (id) => {
                     <td className="p-2 border">{s.email}</td>
                     <td className="p-2 border">{s.className}</td>
                     <td className="p-2 border">{s.section}</td>
-                    <td className="p-2 border flex justify-center gap-2">
+                    <td className="p-2 border flex flex-col sm:flex-row justify-center gap-2">
                       <button
                         onClick={() => handleStudentEditClick(s)}
-                        className="bg-green-500 hover:bg-green-600 px-3 py-1 rounded font-semibold"
+                        className="bg-green-500 hover:bg-green-600 px-3 py-1 rounded font-semibold w-full sm:w-auto"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleStudentDelete(s._id)}
-                        className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded font-semibold"
+                        className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded font-semibold w-full sm:w-auto"
                       >
                         Delete
                       </button>
@@ -773,6 +771,7 @@ const handleTeacherFormSubmit = async (id) => {
     </div>
   </>
 )}
+
 
 
 
@@ -878,10 +877,15 @@ const handleTeacherFormSubmit = async (id) => {
             </div>
           )}
 {activePage === "view-requests" && <TeacherRequestView userRole={"admin"} />}
-        </div>
+        </div> 
       </div>
     </div>
   );
 }
+
+
+
+
+
 
 

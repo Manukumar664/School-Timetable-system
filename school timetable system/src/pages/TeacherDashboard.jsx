@@ -396,8 +396,6 @@
 //     </option>
 //   ))}
 // </select>
-
-
 //           {/* Section Dropdown */}
 //           <label className="block mb-2">Section</label>
 //          <select
@@ -524,7 +522,6 @@ export default function TeacherDashboard() {
     period: "",
     reason: "",
   });
-
   // 🔹 MOBILE SIDEBAR STATE
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -928,9 +925,6 @@ export default function TeacherDashboard() {
     </p>
   </section>
 )}
-
-
-          
         </main>
       </div>
     </div>

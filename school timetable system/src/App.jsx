@@ -9,6 +9,11 @@ import StudentTable from "./components/StudentTable";
 import TeacherTable from "./components/TeacherTable";
 import TimetableTable from "./components/TimetableTable";
 
+import ForgotPassword from "./pages/ForgotPassword";
+
+
+
+
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
@@ -25,6 +30,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+    {/* <Route path="/login" element={<Login />} /> */}
 
         <Route path="/admin" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />
         <Route path="/add-student" element={<ProtectedRoute allowedRoles={["admin"]}><StudentTable /></ProtectedRoute>} />
@@ -33,6 +39,8 @@ function App() {
         <Route path="/student/profile" element={<ProtectedRoute allowedRoles={["student"]}><StudentDashboard /></ProtectedRoute>} />
         <Route path="/teacher" element={<ProtectedRoute allowedRoles={["teacher"]}><TeacherDashboard /></ProtectedRoute>} />
 
+
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="*" element={<h2 className="p-6">Page Not Found</h2>} />
       </Routes>
     </Router>
