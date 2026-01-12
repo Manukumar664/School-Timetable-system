@@ -233,8 +233,12 @@ export default function StudentDashboard() {
 
     const fetchTimetable = async () => {
       try {
-        const res = await API.get("students/timetable");
+        const res = await API.get("/students/timetable");
+        console.log("time",res.data.data);
+        
         setTimetable(res.data.data || []);
+        
+        
       } catch (err) {
         console.error("Error fetching timetable:", err);
       }
@@ -281,18 +285,21 @@ export default function StudentDashboard() {
                     </h3>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                      {slots.map((subject, sidx) => (
-                        <div
-                          key={sidx}
-                          className="p-5 rounded-xl shadow-lg bg-gray-900 text-white hover:scale-105 transition"
-                        >
-                          <p className="font-semibold text-lg">{subject}</p>
-                          <p className="text-sm mt-2 text-gray-300">
-                            Lecture on{" "}
-                            {new Date(day.createdAt).toLocaleTimeString()}
-                          </p>
-                        </div>
-                      ))}
+                   {slots.map((slot, sidx) => (
+  <div
+    key={sidx}
+    className="p-5 rounded-xl shadow-lg bg-gray-900 text-white hover:scale-105 transition"
+  >
+    <p className="font-semibold text-lg">
+      {slot.subject}
+    </p>
+
+    <p className="text-sm mt-2 text-gray-300">
+      {slot.time}
+    </p>
+  </div>
+))}
+
                     </div>
                   </div>
                 );

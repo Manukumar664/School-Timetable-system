@@ -4,7 +4,6 @@ import Sidebar from "../components/Sidebar";
 import API from "../api/axios";
 import HolidayCalendar from "../components/HolidayCalendar";
 import TeacherRequestView from "../components/TeacherRequestView";
-
 export default function AdminDashboard() {
   const [activePage, setActivePage] = useState("manage-timetable");
   const [adminName, setAdminName] = useState("Admin");
@@ -16,7 +15,7 @@ const [selectedDay, setSelectedDay] = useState("");
   const [error, setError] = useState("");
   const [timetable, setTimetable] = useState([]);
   const [editingId, setEditingId] = useState(null);
-
+ 
 
   const defaultFormData = {
   day: "",
@@ -26,50 +25,41 @@ const [selectedDay, setSelectedDay] = useState("");
   className: "",
   section: "",
 };
-
 const [formData, setFormData] = useState(defaultFormData);
-
-
 // Add these for time and subject
 const [selectedTime, setSelectedTime] = useState("");
 const [selectedSubject, setSelectedSubject] = useState("");
 const [filterSection, setFilterSection] = useState(""); // <--- ADD THIS
-
 const [filterClass, setFilterClass] = useState("")
-
   const classes = ["1","2","3","4","5","6","7","8","9","10","11","12"];
   const sections = ["A", "B", "C", "D"];
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
   const [selectedTeacher, setSelectedTeacher] = useState("");
   // Existing state
-
-
   // =======================
   // Fetch Users & Timetable
   // =======================
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await API.get("/admin/users");
-          
+        const res = await API.get("/admin/users");  
+                
           console.log("all",res.data.data)
-
-        const allUsers =  res.data.data;
-             
+        const allUsers =  res.data.data;            
         setStudents(allUsers.filter((u) => u.role === "student"));
         setTeachers(allUsers.filter((u) => u.role === "teacher"));
-
         // Fetch timetable
         const ttRes = await API.get("/timetable/assignedClass");
         setTimetable(ttRes.data.data || []);
+        console.log("time",timetable);
+        
       } catch (err) {
         setError(err.response?.data?.message || "Error fetching data");
       }
     };
     fetchData();
   }, []);
-
   // =======================
   // Timetable Handlers
   // =======================
@@ -77,11 +67,9 @@ const [filterClass, setFilterClass] = useState("")
     setEditingId(row._id);
     setFormData({ day: row.day, slot1: row.slot1, slot2: row.slot2, slot3: row.slot3,className: row.classname,section: row.section });
   };
-
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
  const handleFormSubmit = async (id) => {
   try {
     const payload = {
@@ -92,10 +80,8 @@ const [filterClass, setFilterClass] = useState("")
       className: formData.className,
       section: formData.section
     };
-
     if (id) {
       const res = await API.put(`/admin/timetable/${id}`, payload);
-
       setTimetable((prev) =>
         prev.map((row) => (row._id === id ? res.data : row))
       );
@@ -104,7 +90,6 @@ const [filterClass, setFilterClass] = useState("")
       const res = await API.post("/timetable/createTable", payload);
       setTimetable((prev) => [...prev, res.data]);
     }
-
     setEditingId(null);
     setFormData({
       day: "",
@@ -114,7 +99,6 @@ const [filterClass, setFilterClass] = useState("")
       className: "",
       section: ""
     });
-
   } catch (err) {
     alert(err.response?.data?.message || "Error updating timetable");
   }
@@ -139,7 +123,7 @@ const [filterClass, setFilterClass] = useState("")
       setTeachers((prev) =>
         prev.map((t) => {
           if (t._id === selectedTeacher) {
-            const newAssignment = res.data.data.assignedClass.slice(-1)[0];
+            const newAssignment = res.data.data?.assignedClass?.slice(-1)[0];
             const updatedAssignments = t.assignedClass ? [...t.assignedClass, newAssignment] : [newAssignment];
             return { ...t, assignedClass: updatedAssignments };
           }
@@ -167,7 +151,6 @@ section: "",
 const handleStudentFormChange = (e) => {
 setStudentFormData({ ...studentFormData, [e.target.name]: e.target.value });
 };
-
 // Click Edit button for a student
 const handleStudentEditClick = (student) => {
 setStudentEditingId(student._id);
@@ -212,7 +195,6 @@ alert("Student deleted successfully");
 alert(err.response?.data?.message || "Error deleting student");
 }
 };
-
 
 const handleTeacherFormSubmit = async (id) => {
   try {
@@ -427,47 +409,62 @@ const handleTeacherFormSubmit = async (id) => {
             <th className="p-2 border">Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {timetable.map((row) => (
-            <tr key={row._id} className="bg-gray-950 border-b border-gray-700">
-              <td className="p-2 border">{row.day}</td>
-              <td className="p-2 border">
-                {row.slot1.subject} <br /> {row.slot1.time}
-              </td>
-              <td className="p-2 border">
-                {row.slot2.subject} <br /> {row.slot2.time}
-              </td>
-              <td className="p-2 border">
-                {row.slot3.subject} <br /> {row.slot3.time}
-              </td>
-              <td className="p-2 border">{row.classRef.className}</td>
-              <td className="p-2 border">{row.classRef.section}</td>
-              <td className="p-2 border flex justify-center gap-2">
-                <button
-                  onClick={() => handleEditClick(row)}
-                  className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded font-semibold"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={async () => {
-                    if (!window.confirm("Are you sure you want to delete this row?")) return;
-                    try {
-                      await API.delete(`/timetable/${row._id}`);
-                      setTimetable((prev) => prev.filter(r => r._id !== row._id));
-                      alert("Deleted successfully");
-                    } catch (err) {
-                      alert(err.response?.data?.message || "Error deleting row");
-                    }
-                  }}
-                  className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded font-semibold"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+      <tbody>
+  {timetable.map((row) => (
+    <tr key={row._id} className="bg-gray-950 border-b border-gray-700">
+      <td className="p-2 border">{row.day}</td>
+
+      <td className="p-2 border">
+        {row.slot1?.subject || "-"} <br />
+        {row.slot1?.time || "-"}
+      </td>
+
+      <td className="p-2 border">
+        {row.slot2?.subject || "-"} <br />
+        {row.slot2?.time || "-"}
+      </td>
+
+      <td className="p-2 border">
+        {row.slot3?.subject || "-"} <br />
+        {row.slot3?.time || "-"}
+      </td>
+
+      <td className="p-2 border">
+        {row.classRef?.className || "Deleted"}
+      </td>
+
+      <td className="p-2 border">
+        {row.classRef?.section || "-"}
+      </td>
+
+      <td className="p-2 border flex justify-center gap-2">
+        <button
+          onClick={() => handleEditClick(row)}
+          className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded font-semibold"
+        >
+          Edit
+        </button>
+
+        <button
+          onClick={async () => {
+            if (!window.confirm("Are you sure you want to delete this row?")) return;
+            try {
+              await API.delete(`/timetable/${row._id}`);
+              setTimetable((prev) => prev.filter(r => r._id !== row._id));
+              alert("Deleted successfully");
+            } catch (err) {
+              alert(err.response?.data?.message || "Error deleting row");
+            }
+          }}
+          className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded font-semibold"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
       </table>
     </div>
   </div>
@@ -772,9 +769,6 @@ const handleTeacherFormSubmit = async (id) => {
   </>
 )}
 
-
-
-
 {activePage === "manage-holiday" && (
     <HolidayCalendar userRole="admin" />
 )}
@@ -882,10 +876,5 @@ const handleTeacherFormSubmit = async (id) => {
     </div>
   );
 }
-
-
-
-
-
 
 

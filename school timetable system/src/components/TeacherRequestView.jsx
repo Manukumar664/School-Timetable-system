@@ -28,15 +28,6 @@ export default function TeacherRequestView({ userRole }) {
 
     fetchRequests();
 
-    // Teacher ke liye auto-refresh
-    let interval;
-    if (userRole === "teacher") {
-      interval = setInterval(fetchRequests, 5000);
-    }
-
-    return () => {
-      if (interval) clearInterval(interval);
-    };
   }, [userRole]);
   
   // Admin status update function
