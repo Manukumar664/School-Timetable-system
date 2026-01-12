@@ -31,6 +31,16 @@ router.get("/profile", authorizeRoles("teacher"), async (req, res) => {
   res.status(200).json({ data: req.user });
 });
 
+// my assign class 
+ router.get("/myClasses",protect,async(req,res)=>{
+  const user = req.user
+ console.log("req user is",user.assignedClass);
+ return res.json(user)
+ 
+ })
+
+
+
 // 🧑‍🎓 Get students assigned to teacher
 router.get("/students", async (req, res) => {
   try {

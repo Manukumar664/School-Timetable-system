@@ -45,14 +45,16 @@ const Class = require("../models/Class");
 //   }
 // });
 router.post("/createTable", async (req, res) => {
-  console.log(req.body); 
   const { day, slot1, slot2, slot3, className, section } = req.body;
   try {
     let classData = await Class.findOne({ className, section });
-    if (!classData) {
+    if(classData){
+      return res.status(400).json({message:"class and section already assigned"})
+    }
+  
       classData = new Class({ className, section });
       await classData.save();
-    }    
+   
     const newEntry=await Timetable.create({
       day,
       slot1,
@@ -92,8 +94,16 @@ router.put("/:id", async (req, res) => {
 // 🟢 Delete timetable entry
 router.delete("/:id", async (req, res) => {
   try {
-    await Timetable.findByIdAndDelete(req.params.id);
-    res.json({ message: "Entry deleted" });
+    
+    const {id}=req.params
+    const table=await Timetable.findById(id)
+    const classID=table.classRef
+
+  await Timetable.findByIdAndDelete(id)
+   if(classID){
+      await Class.findByIdAndDelete(classID)
+   }
+   res.json({ message: "Entry deleted" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -109,32 +119,5 @@ router.get("/assignedClass", async (req, res) => {
     return res.json({ success: false, message: error.message });
   }
 });
-// router.get("/assignedClass", protect, async (req, res) => {
-//   try {
-//     const user = req.user;
-//     console.log("assigned user is ", user);
 
-//     if (!user || !user._id) {
-//       return res.status(400).json({ message: "User not found or not authenticated" });
-//     }
-
-//     // Fetch full user details
-//     const teacher = await User.findById(user._id).select("name email role assignedClass");
-
-//     if (!teacher) {
-//       return res.status(404).json({ message: "Teacher not found" });
-//     }
-
-//     // ✅ Sort assignedClass by recent createdAt / assignedAt
-//     teacher.assignedClass.sort((a, b) => new Date(b.assignedAt) - new Date(a.assignedAt));
-
-//     return res.status(200).json({
-//       success: true,
-//       assignedClass: teacher.assignedClass,
-//     });
-//   } catch (error) {
-//     console.error("Error fetching assigned classes:", error);
-//     res.status(500).json({ message: "Server error", error });
-//   }
-// });
 module.exports = router;
