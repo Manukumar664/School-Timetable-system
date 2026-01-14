@@ -15,7 +15,8 @@ const [selectedDay, setSelectedDay] = useState("");
   const [error, setError] = useState("");
   const [timetable, setTimetable] = useState([]);
   const [editingId, setEditingId] = useState(null);
- 
+  const [searchName, setSearchName] = useState("");
+
 
   const defaultFormData = {
   day: "",
@@ -276,7 +277,7 @@ const handleTeacherFormSubmit = async (id) => {
         {/* Day */}
         <input
           name="day"
-          placeholder="Day"
+          placeholder="Day (Monday)"
           value={formData.day}
           onChange={handleFormChange}
           className="p-3 rounded-lg w-full text-white bg-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
@@ -293,7 +294,7 @@ const handleTeacherFormSubmit = async (id) => {
                 slot1: { ...formData.slot1, subject: e.target.value },
               })
             }
-            className="p-3 rounded-lg w-full text-white bg-gray-800 placeholder-gray-400 mb-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="p-3 rounded-lg bg-gray-800 text-white mb-2"
           />
           <select
             value={formData.slot1.time}
@@ -303,10 +304,12 @@ const handleTeacherFormSubmit = async (id) => {
                 slot1: { ...formData.slot1, time: e.target.value },
               })
             }
-            className="p-3 rounded-lg w-full text-black bg-blue-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="p-3 rounded-lg bg-blue-600 text-black"
           >
             <option value="">Select Time</option>
-            {["9:00AM - 10:00AM","10:00AM - 11:00AM","11:00AM - 12:00PM","12:00PM - 1:00PM","1:00PM - 2:00PM","2:00PM - 3:00PM","3:00PM - 4:00PM"].map((time)=>(<option key={time} value={time}>{time}</option>))}
+            {["9:00AM - 10:00AM","10:00AM - 11:00AM","11:00AM - 12:00PM","12:00PM - 1:00PM","1:00PM - 2:00PM","2:00PM - 3:00PM","3:00PM - 4:00PM"].map(time=>(
+              <option key={time} value={time}>{time}</option>
+            ))}
           </select>
         </div>
 
@@ -321,7 +324,7 @@ const handleTeacherFormSubmit = async (id) => {
                 slot2: { ...formData.slot2, subject: e.target.value },
               })
             }
-            className="p-3 rounded-lg w-full text-white bg-gray-800 placeholder-gray-400 mb-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="p-3 rounded-lg bg-gray-800 text-white mb-2"
           />
           <select
             value={formData.slot2.time}
@@ -331,10 +334,12 @@ const handleTeacherFormSubmit = async (id) => {
                 slot2: { ...formData.slot2, time: e.target.value },
               })
             }
-            className="p-3 rounded-lg w-full text-black bg-blue-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="p-3 rounded-lg bg-blue-600 text-black"
           >
             <option value="">Select Time</option>
-            {["9:00AM - 10:00AM","10:00AM - 11:00AM","11:00AM - 12:00PM","12:00PM - 1:00PM","1:00PM - 2:00PM","2:00PM - 3:00PM","3:00PM - 4:00PM"].map((time)=>(<option key={time} value={time}>{time}</option>))}
+            {["9:00AM - 10:00AM","10:00AM - 11:00AM","11:00AM - 12:00PM","12:00PM - 1:00PM","1:00PM - 2:00PM","2:00PM - 3:00PM","3:00PM - 4:00PM"].map(time=>(
+              <option key={time} value={time}>{time}</option>
+            ))}
           </select>
         </div>
 
@@ -349,7 +354,7 @@ const handleTeacherFormSubmit = async (id) => {
                 slot3: { ...formData.slot3, subject: e.target.value },
               })
             }
-            className="p-3 rounded-lg w-full text-white bg-gray-800 placeholder-gray-400 mb-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="p-3 rounded-lg bg-gray-800 text-white mb-2"
           />
           <select
             value={formData.slot3.time}
@@ -359,10 +364,12 @@ const handleTeacherFormSubmit = async (id) => {
                 slot3: { ...formData.slot3, time: e.target.value },
               })
             }
-            className="p-3 rounded-lg w-full text-black bg-blue-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="p-3 rounded-lg bg-blue-600 text-black"
           >
             <option value="">Select Time</option>
-            {["9:00AM - 10:00AM","10:00AM - 11:00AM","11:00AM - 12:00PM","12:00PM - 1:00PM","1:00PM - 2:00PM","2:00PM - 3:00PM","3:00PM - 4:00PM"].map((time)=>(<option key={time} value={time}>{time}</option>))}
+            {["9:00AM - 10:00AM","10:00AM - 11:00AM","11:00AM - 12:00PM","12:00PM - 1:00PM","1:00PM - 2:00PM","2:00PM - 3:00PM","3:00PM - 4:00PM"].map(time=>(
+              <option key={time} value={time}>{time}</option>
+            ))}
           </select>
         </div>
 
@@ -372,7 +379,7 @@ const handleTeacherFormSubmit = async (id) => {
           placeholder="Class"
           value={formData.className}
           onChange={handleFormChange}
-          className="p-3 rounded-lg w-full text-white bg-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="p-3 rounded-lg bg-gray-800 text-white"
         />
 
         {/* Section */}
@@ -381,22 +388,36 @@ const handleTeacherFormSubmit = async (id) => {
           placeholder="Section"
           value={formData.section}
           onChange={handleFormChange}
-          className="p-3 rounded-lg w-full text-white bg-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="p-3 rounded-lg bg-gray-800 text-white"
         />
 
-        {/* Add / Update Button */}
+        {/* Submit */}
         <button
           onClick={() => handleFormSubmit(editingId)}
-          className="bg-green-600 hover:bg-green-700 text-black font-bold px-6 py-3 rounded-lg text-lg"
+          className="bg-green-600 hover:bg-green-700 text-black font-bold px-6 py-3 rounded-lg"
         >
           {editingId ? "Update" : "Add"}
         </button>
       </div>
     </div>
 
+    {/* ===== Day Filter ===== */}
+    <div className="flex items-center gap-3 mb-4">
+      <span className="text-cyan-300 font-semibold">Filter by Day:</span>
+      <select
+        value={selectedDay}
+        onChange={(e) => setSelectedDay(e.target.value)}
+        className="p-2 rounded bg-gray-800 text-white"
+      >
+        <option value="All">All Days</option>
+        {["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"].map(day=>(
+          <option key={day} value={day}>{day}</option>
+        ))}
+      </select>
+    </div>
+
     {/* ===== Timetable Table ===== */}
-    <div className="overflow-x-auto bg-gray-900 p-4 rounded-xl shadow-inner">
-      <h4 className="text-xl font-semibold mb-4 text-cyan-300">Timetable</h4>
+    <div className="overflow-x-auto bg-gray-900 p-4 rounded-xl">
       <table className="min-w-full text-center border border-gray-700">
         <thead className="bg-gray-950 text-cyan-300">
           <tr>
@@ -409,156 +430,140 @@ const handleTeacherFormSubmit = async (id) => {
             <th className="p-2 border">Actions</th>
           </tr>
         </thead>
-      <tbody>
-  {timetable.map((row) => (
-    <tr key={row._id} className="bg-gray-950 border-b border-gray-700">
-      <td className="p-2 border">{row.day}</td>
 
-      <td className="p-2 border">
-        {row.slot1?.subject || "-"} <br />
-        {row.slot1?.time || "-"}
-      </td>
-
-      <td className="p-2 border">
-        {row.slot2?.subject || "-"} <br />
-        {row.slot2?.time || "-"}
-      </td>
-
-      <td className="p-2 border">
-        {row.slot3?.subject || "-"} <br />
-        {row.slot3?.time || "-"}
-      </td>
-
-      <td className="p-2 border">
-        {row.classRef?.className || "Deleted"}
-      </td>
-
-      <td className="p-2 border">
-        {row.classRef?.section || "-"}
-      </td>
-
-      <td className="p-2 border flex justify-center gap-2">
-        <button
-          onClick={() => handleEditClick(row)}
-          className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded font-semibold"
-        >
-          Edit
-        </button>
-
-        <button
-          onClick={async () => {
-            if (!window.confirm("Are you sure you want to delete this row?")) return;
-            try {
-              await API.delete(`/timetable/${row._id}`);
-              setTimetable((prev) => prev.filter(r => r._id !== row._id));
-              alert("Deleted successfully");
-            } catch (err) {
-              alert(err.response?.data?.message || "Error deleting row");
-            }
-          }}
-          className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded font-semibold"
-        >
-          Delete
-        </button>
-      </td>
-    </tr>
-  ))}
-</tbody>
-
+        <tbody>
+          {timetable
+            // ✅ Fix for All Days filter
+            .filter(row =>
+              selectedDay === "All" ? true : row.day?.trim() === selectedDay
+            )
+            .map(row => (
+              <tr key={row._id} className="bg-gray-950 border-b border-gray-700">
+                <td className="p-2 border">{row.day}</td>
+                <td className="p-2 border">{row.slot1?.subject} <br /> {row.slot1?.time}</td>
+                <td className="p-2 border">{row.slot2?.subject} <br /> {row.slot2?.time}</td>
+                <td className="p-2 border">{row.slot3?.subject} <br /> {row.slot3?.time}</td>
+                <td className="p-2 border">{row.classRef?.className}</td>
+                <td className="p-2 border">{row.classRef?.section}</td>
+                <td className="p-2 border flex gap-2 justify-center">
+                  <button onClick={() => handleEditClick(row)} className="bg-yellow-500 px-3 py-1 rounded">Edit</button>
+                  <button onClick={() => handleDelete(row._id)} className="bg-red-600 px-3 py-1 rounded">Delete</button>
+                </td>
+              </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   </div>
 )}
 
 
-{/* ================= Assign Class ================= */}
+
+
 {activePage === "assign-class" && (
-  <div className="bg-gray-900 via-gray-700 to-gray-900 p-6 rounded-2xl shadow-2xl mb-8">
-    <h3 className="text-2xl font-bold mb-4 text-cyan-300">
+  <div className="bg-gray-900 text-white p-6 rounded-2xl shadow-2xl">
+
+    {/* ===== Heading ===== */}
+    <h3 className="text-2xl font-bold mb-4 border-b border-gray-700 pb-2 text-cyan-400">
       Assign Class to Teacher
     </h3>
-    {/* ================== Assign Form ================== */}
-    <div className="flex flex-col md:flex-row gap-4 items-center mb-4">
-      {/* Select Class */}
+
+    {/* ===== Search / Filter ===== */}
+    <div className="flex flex-wrap gap-4 mb-4">
       <select
-        value={selectedClass}
-        onChange={(e) => setSelectedClass(e.target.value)}
-        className="text-white px-3 py-2 rounded w-full md:w-1/5 bg-cyan-700"
+        value={filterClass}
+        onChange={(e) => setFilterClass(e.target.value)}
+        className="px-3 py-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
       >
-        <option value="">Select Class</option>
+        <option value="All">All Classes</option>
         {classes.map((cls) => (
-          <option key={cls} value={cls}>
-            {cls}
-          </option>
+          <option key={cls} value={cls}>{cls}</option>
         ))}
       </select>
-      {/* Select Section */}
+
       <select
-        value={selectedSection}
-        onChange={(e) => setSelectedSection(e.target.value)}
-        className="text-white px-3 py-2 rounded w-full md:w-1/5 bg-cyan-700"
+        value={filterSection}
+        onChange={(e) => setFilterSection(e.target.value)}
+        className="px-3 py-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
       >
-        <option value="">Select Section</option>
+        <option value="All">All Sections</option>
         {sections.map((sec) => (
-          <option key={sec} value={sec}>
-            {sec}
-          </option>
+          <option key={sec} value={sec}>{sec}</option>
         ))}
       </select>
-      {/* Select Teacher */}
-      <select
-        value={selectedTeacher}
-        onChange={(e) => setSelectedTeacher(e.target.value)}
-        className="text-white px-3 py-2 rounded w-full md:w-1/5 bg-cyan-700"
-      >
-        <option value="">Select Teacher</option>
-        {teachers.map((t) => (
-          <option key={t._id} value={t._id}>
-            {t.name}
-          </option>
-        ))}
-      </select>
-      {/* Select Time */}
-      <select
-        value={selectedTime}
-        onChange={(e) => setSelectedTime(e.target.value)}
-        className="text-white px-3 py-2 rounded w-full md:w-1/5 bg-cyan-700"
-      >
-        <option value="">Select Time</option>
-        {["9AM-10AM", "10AM-11AM", "11AM-12PM"].map((time) => (
-          <option key={time} value={time}>
-            {time}
-          </option>
-        ))}
-      </select>
-      {/* Select Subject */}
-      <select
-        value={selectedSubject}
-        onChange={(e) => setSelectedSubject(e.target.value)}
-        className="text-white px-3 py-2 rounded w-full md:w-1/5 bg-cyan-700"
-      >
-        <option value="">Select Subject</option>
-        {["Math", "Science", "English", "Hindi"].map((subj) => (
-          <option key={subj} value={subj}>
-            {subj}
-          </option>
-        ))}
-      </select>
-      {/* Assign Button */}
-      <button
-        onClick={handleAssignClass}
-        className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded font-semibold shadow"
-      >
-        Assign
-      </button>
     </div>
-    {/* ================== Assigned Classes Table ================== */}
-    <div className="overflow-x-auto mt-4">
-      <h4 className="text-xl font-semibold mb-2 text-cyan-200">
-        Assigned Classes
-      </h4>
-      <table className="min-w-full text-center border border-gray-600">
-        <thead className="bg-gray-950 text-cyan-300">
+
+    {/* ===== Assign Form ===== */}
+    <div className="mb-6 bg-gray-950 p-4 rounded">
+      <div className="flex flex-col md:flex-row gap-2">
+        <select
+          value={selectedClass}
+          onChange={(e) => setSelectedClass(e.target.value)}
+          className="px-3 py-2 rounded bg-gray-800 text-white w-full md:w-1/5"
+        >
+          <option value="">Select Class</option>
+          {classes.map((cls) => (
+            <option key={cls} value={cls}>{cls}</option>
+          ))}
+        </select>
+
+        <select
+          value={selectedSection}
+          onChange={(e) => setSelectedSection(e.target.value)}
+          className="px-3 py-2 rounded bg-gray-800 text-white w-full md:w-1/5"
+        >
+          <option value="">Select Section</option>
+          {sections.map((sec) => (
+            <option key={sec} value={sec}>{sec}</option>
+          ))}
+        </select>
+
+        <select
+          value={selectedTeacher}
+          onChange={(e) => setSelectedTeacher(e.target.value)}
+          className="px-3 py-2 rounded bg-gray-800 text-white w-full md:w-1/5"
+        >
+          <option value="">Select Teacher</option>
+          {teachers.map((t) => (
+            <option key={t._id} value={t._id}>{t.name}</option>
+          ))}
+        </select>
+
+        <select
+          value={selectedSubject}
+          onChange={(e) => setSelectedSubject(e.target.value)}
+          className="px-3 py-2 rounded bg-gray-800 text-white w-full md:w-1/5"
+        >
+          <option value="">Select Subject</option>
+          {["Math", "Science", "English", "Hindi"].map((subj) => (
+            <option key={subj} value={subj}>{subj}</option>
+          ))}
+        </select>
+
+        <select
+          value={selectedTime}
+          onChange={(e) => setSelectedTime(e.target.value)}
+          className="px-3 py-2 rounded bg-gray-800 text-white w-full md:w-1/5"
+        >
+          <option value="">Select Time</option>
+          {["9AM-10AM", "10AM-11AM", "11AM-12PM"].map((time) => (
+            <option key={time} value={time}>{time}</option>
+          ))}
+        </select>
+
+        <button
+          onClick={handleAssignClass}
+          className="bg-green-600 hover:bg-green-700 text-black font-semibold px-4 py-2 rounded"
+        >
+          Assign
+        </button>
+      </div>
+    </div>
+
+    {/* ===== Assigned Classes Table ===== */}
+    <div className="overflow-x-auto">
+      <table className="min-w-full text-center border border-gray-800 bg-gray-950">
+        <thead className="bg-gray-900 text-cyan-300">
           <tr>
             <th className="p-2 border">Teacher</th>
             <th className="p-2 border">Class</th>
@@ -571,80 +576,92 @@ const handleTeacherFormSubmit = async (id) => {
           {teachers
             .filter((t) => t.assignedClass?.length > 0)
             .map((t) =>
-              t.assignedClass.map((ac, idx) => (
-                <tr key={t._id + idx} className="bg-gray-950 ">
-                  <td className="p-2 border">{t.name}</td>
-                  <td className="p-2 border">{ac.className}</td>
-                  <td className="p-2 border">{ac.section}</td>
-                  <td className="p-2 border">{ac.subject || "-"}</td>
-                  <td className="p-2 border">{ac.time || "-"}</td>
-                </tr>
-              ))
+              t.assignedClass
+                .filter(ac =>
+                  (filterClass === "All" || ac.className?.trim().toLowerCase() === filterClass.toLowerCase()) &&
+                  (filterSection === "All" || ac.section?.trim().toLowerCase() === filterSection.toLowerCase())
+                )
+                .map((ac, idx) => (
+                  <tr
+                    key={t._id + idx}
+                    className={`${
+                      idx % 2 === 0 ? "bg-gray-950" : "bg-gray-900"
+                    } border-b border-gray-700`}
+                  >
+                    <td className="p-2 border">{t?.name}</td>
+                    <td className="p-2 border">{ac?.className}</td>
+                    <td className="p-2 border">{ac?.section}</td>
+                    <td className="p-2 border">{ac?.subject || "-"}</td>
+                    <td className="p-2 border">{ac?.time || "-"}</td>
+                  </tr>
+                ))
             )}
         </tbody>
       </table>
     </div>
   </div>
 )}
+
 {/* ================= Students jsx ================= */}
 {activePage === "manage-student" && (
-  <>
+  <div className="bg-gray-900 text-white p-6 rounded-2xl shadow-2xl">
+
+    {/* ===== Heading ===== */}
+    <h3 className="text-2xl font-bold mb-4 border-b border-gray-700 pb-2 text-cyan-400">
+      Student List
+    </h3>
+
     {/* ===== Filter by Class & Section ===== */}
-    <div className="mb-4 flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4">
-      <div className="flex items-center gap-2">
-        <label className="text-cyan-300 font-semibold">Filter by Class:</label>
-        <select
-          value={filterClass}
-          onChange={(e) => setFilterClass(e.target.value)}
-          className="text-white px-3 py-2 rounded bg-cyan-700"
-        >
-          <option value="">All Classes</option>
-          {classes.map((cls) => (
-            <option key={cls} value={cls}>{cls}</option>
-          ))}
-        </select>
-      </div>
-      <div className="flex items-center gap-2">
-        <label className="text-cyan-300 font-semibold">Filter by Section:</label>
-        <select
-          value={filterSection}
-          onChange={(e) => setFilterSection(e.target.value)}
-          className="text-white px-3 py-2 rounded bg-cyan-700"
-        >
-          <option value="">All Sections</option>
-          {sections.map((sec) => (
-            <option key={sec} value={sec}>{sec}</option>
-          ))}
-        </select>
-      </div>
+    <div className="mb-6 flex flex-wrap gap-4">
+      <select
+        value={filterClass}
+        onChange={(e) => setFilterClass(e.target.value)}
+        className="px-3 py-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+      >
+        <option value="">All Classes</option>
+        {[...new Set(students.map(s => s.className))].map(cls => (
+          <option key={cls} value={cls}>{cls}</option>
+        ))}
+      </select>
+
+      <select
+        value={filterSection}
+        onChange={(e) => setFilterSection(e.target.value)}
+        className="px-3 py-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+      >
+        <option value="">All Sections</option>
+        {[...new Set(students.map(s => s.section))].map(sec => (
+          <option key={sec} value={sec}>{sec}</option>
+        ))}
+      </select>
     </div>
 
     {/* ===== Add / Edit Student Form ===== */}
-    <div className="mb-4 bg-gray-900 p-4 rounded shadow-md">
-      <h4 className="text-lg font-semibold mb-2 text-cyan-300">Add / Edit Student</h4>
-      <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
+    <div className="mb-6 bg-gray-950 p-4 rounded shadow-inner">
+      <h4 className="text-lg font-semibold mb-3 text-cyan-300">Add / Edit Student</h4>
+      <div className="flex flex-col md:flex-row flex-wrap gap-3">
         <input
           placeholder="Name"
           name="name"
           value={studentFormData.name}
           onChange={handleStudentFormChange}
-          className="text-white px-2 py-1 rounded w-full sm:w-1/2 md:w-1/4"
+          className="px-3 py-2 rounded bg-gray-800 text-white w-full md:w-1/4 focus:outline-none focus:ring-2 focus:ring-cyan-400"
         />
         <input
           placeholder="Email"
           name="email"
           value={studentFormData.email}
           onChange={handleStudentFormChange}
-          className="text-white px-2 py-1 rounded w-full sm:w-1/2 md:w-1/4"
+          className="px-3 py-2 rounded bg-gray-800 text-white w-full md:w-1/4 focus:outline-none focus:ring-2 focus:ring-cyan-400"
         />
         <select
           name="className"
           value={studentFormData.className}
           onChange={handleStudentFormChange}
-          className="text-white px-2 py-1 rounded w-full sm:w-1/2 md:w-1/4 bg-gray-700"
+          className="px-3 py-2 rounded bg-gray-800 text-white w-full md:w-1/4 focus:outline-none focus:ring-2 focus:ring-cyan-400"
         >
           <option value="">Select Class</option>
-          {classes.map((cls) => (
+          {[...new Set(students.map(s => s.className))].map(cls => (
             <option key={cls} value={cls}>{cls}</option>
           ))}
         </select>
@@ -652,16 +669,17 @@ const handleTeacherFormSubmit = async (id) => {
           name="section"
           value={studentFormData.section}
           onChange={handleStudentFormChange}
-          className="text-white px-2 py-1 rounded w-full sm:w-1/2 md:w-1/4 bg-gray-700"
+          className="px-3 py-2 rounded bg-gray-800 text-white w-full md:w-1/4 focus:outline-none focus:ring-2 focus:ring-cyan-400"
         >
           <option value="">Select Section</option>
-          {sections.map((sec) => (
+          {[...new Set(students.map(s => s.section))].map(sec => (
             <option key={sec} value={sec}>{sec}</option>
           ))}
         </select>
+
         <button
           onClick={() => handleStudentFormSubmit(studentEditingId)}
-          className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded font-semibold w-full sm:w-auto"
+          className="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-6 py-2 rounded w-full md:w-auto transition"
         >
           {studentEditingId ? "Save" : "Add"}
         </button>
@@ -669,9 +687,9 @@ const handleTeacherFormSubmit = async (id) => {
     </div>
 
     {/* ===== Students Table ===== */}
-    <div className="overflow-x-auto rounded shadow-md">
+    <div className="overflow-x-auto rounded shadow-lg">
       <table className="min-w-full text-center border border-gray-700">
-        <thead className="bg-gray-950 text-cyan-300">
+        <thead className="bg-gray-900 text-cyan-300">
           <tr>
             <th className="p-2 border">Name</th>
             <th className="p-2 border">Email</th>
@@ -682,10 +700,10 @@ const handleTeacherFormSubmit = async (id) => {
         </thead>
         <tbody>
           {students
-            .filter((s) => (filterClass ? s.className === filterClass : true))
-            .filter((s) => (filterSection ? s.section === filterSection : true))
-            .map((s) => (
-              <tr key={s._id} className="border-b border-gray-700">
+            .filter(s => !filterClass || s.className?.trim() === filterClass)
+            .filter(s => !filterSection || s.section?.trim() === filterSection)
+            .map((s, idx) => (
+              <tr key={s._id} className={`${idx % 2 === 0 ? "bg-gray-950" : "bg-gray-900"} border-b border-gray-700`}>
                 {studentEditingId === s._id ? (
                   <>
                     <td className="p-2 border">
@@ -693,7 +711,7 @@ const handleTeacherFormSubmit = async (id) => {
                         name="name"
                         value={studentFormData.name}
                         onChange={handleStudentFormChange}
-                        className="text-black px-2 py-1 rounded w-full"
+                        className="w-full px-2 py-1 rounded text-black"
                       />
                     </td>
                     <td className="p-2 border">
@@ -701,7 +719,7 @@ const handleTeacherFormSubmit = async (id) => {
                         name="email"
                         value={studentFormData.email}
                         onChange={handleStudentFormChange}
-                        className="text-black px-2 py-1 rounded w-full"
+                        className="w-full px-2 py-1 rounded text-black"
                       />
                     </td>
                     <td className="p-2 border">
@@ -709,10 +727,10 @@ const handleTeacherFormSubmit = async (id) => {
                         name="className"
                         value={studentFormData.className}
                         onChange={handleStudentFormChange}
-                        className="text-black px-2 py-1 rounded w-full"
+                        className="w-full px-2 py-1 rounded text-black"
                       >
                         <option value="">Select Class</option>
-                        {classes.map((cls) => (
+                        {[...new Set(students.map(s => s.className))].map(cls => (
                           <option key={cls} value={cls}>{cls}</option>
                         ))}
                       </select>
@@ -722,10 +740,10 @@ const handleTeacherFormSubmit = async (id) => {
                         name="section"
                         value={studentFormData.section}
                         onChange={handleStudentFormChange}
-                        className="text-black px-2 py-1 rounded w-full"
+                        className="w-full px-2 py-1 rounded text-black"
                       >
                         <option value="">Select Section</option>
-                        {sections.map((sec) => (
+                        {[...new Set(students.map(s => s.section))].map(sec => (
                           <option key={sec} value={sec}>{sec}</option>
                         ))}
                       </select>
@@ -733,7 +751,7 @@ const handleTeacherFormSubmit = async (id) => {
                     <td className="p-2 border flex flex-col sm:flex-row justify-center gap-2">
                       <button
                         onClick={() => handleStudentFormSubmit(studentEditingId)}
-                        className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded font-semibold w-full sm:w-auto"
+                        className="bg-emerald-500 hover:bg-emerald-600 text-black px-4 py-1 rounded font-semibold w-full sm:w-auto transition"
                       >
                         Save
                       </button>
@@ -748,13 +766,13 @@ const handleTeacherFormSubmit = async (id) => {
                     <td className="p-2 border flex flex-col sm:flex-row justify-center gap-2">
                       <button
                         onClick={() => handleStudentEditClick(s)}
-                        className="bg-green-500 hover:bg-green-600 px-3 py-1 rounded font-semibold w-full sm:w-auto"
+                        className="bg-emerald-500 hover:bg-emerald-600 text-black px-4 py-1 rounded font-semibold w-full sm:w-auto transition"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleStudentDelete(s._id)}
-                        className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded font-semibold w-full sm:w-auto"
+                        className="bg-red-600 hover:bg-red-700 px-4 py-1 rounded font-semibold w-full sm:w-auto transition"
                       >
                         Delete
                       </button>
@@ -766,7 +784,8 @@ const handleTeacherFormSubmit = async (id) => {
         </tbody>
       </table>
     </div>
-  </>
+
+  </div>
 )}
 
 {activePage === "manage-holiday" && (
@@ -776,100 +795,136 @@ const handleTeacherFormSubmit = async (id) => {
     <HolidayCalendar userRole="student" />
 )}
           {/* ================= Teachers ================= */}
-          {activePage === "manage-teacher" && (
-            <div className="bg-gray-900 text-white p-6 rounded-2xl shadow-2xl">
-              <h3 className="text-2xl font-bold mb-4 border-b border-gray-700 pb-2 text-cyan-400">Teacher List</h3>
+         {activePage === "manage-teacher" && (
+  <div className="bg-gray-900 text-white p-6 rounded-2xl shadow-2xl">
 
-              {/* ===== Add Teacher Form ===== */}
-              <div className="mb-4 bg-gray-950 p-4 rounded">
-                <h4 className="text-lg font-semibold mb-2 text-cyan-300">Add New Teacher</h4>
-                <div className="flex flex-col md:flex-row gap-2 ">
-                  <input
-                    placeholder="Name"
-                    name="name"
-                    value={formData.name || ""}
-                    onChange={handleFormChange}
-                    className="text-white px-2 py-1 rounded w-full md:w-1/3"
-                  />
-                  <input
-                    placeholder="Email"
-                    name="email"
-                    value={formData.email || ""}
-                    onChange={handleFormChange}
-                    className="text-white px-2 py-1 rounded w-full md:w-1/3"
-                  />  
-                  <button
-                    onClick={() => handleTeacherFormSubmit(null)}
-                    className="bg-green-600 hover:bg-green-700 px-4 py-1 rounded font-semibold"
-                  >
-                    Add
-                  </button>
-                </div>
-              </div>
-              <table className="min-w-full text-center border border-gray-800  bg-gray-950">
-                <thead>
-                  <tr>
-                    <th className="p-2 border">Name</th>
-                    <th className="p-2 border">Email</th>
-                    <th className="p-2 border">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {teachers.map((t) => (
-                    <tr key={t._id} className="border-b border-gray-700 bg-gray-950">
-                      {editingId === t._id ? (
-                        <>
-                          <td className="p-2 border">
-                            <input
-                              name="name"
-                              value={formData.name}
-                              onChange={handleFormChange}
-                              className="text-black px-2 py-1 rounded w-full"
-                            />
-                          </td>
-                          <td className="p-2 border">
-                            <input
-                              name="email"
-                              value={formData.email}
-                              onChange={handleFormChange}
-                              className="text-white px-2 py-1 rounded w-full"
-                            />
-                          </td>
-                          <td className="p-2 border flex justify-center gap-2">
-                            <button
-                              onClick={() => handleTeacherFormSubmit(t._id)}
-                              className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded font-semibold"
-                            >
-                              Save
-                            </button>
-                          </td>
-                        </>
-                      ) : (
-                        <>
-                          <td className="p-2 border">{t.name}</td>
-                          <td className="p-2 border">{t.email}</td>
-                          <td className="p-2 border flex justify-center gap-2">
-                            <button
-                              onClick={() => handleTeacherEditClick(t)}
-                              className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded font-semibold"
-                            >
-                              Update 
-                            </button>
-                            <button
-                              onClick={() => handleTeacherDelete(t._id)}
-                              className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded font-semibold"
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </>
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+    {/* ===== Heading ===== */}
+    <h3 className="text-2xl font-bold mb-4 border-b border-gray-700 pb-2 text-cyan-400">
+      Teacher List
+    </h3>
+
+    {/* ===== Search Filter ===== */}
+    <div className="mb-4">
+      <input
+        type="text"
+        placeholder="Search teacher by name..."
+        value={searchName}
+        onChange={(e) => setSearchName(e.target.value)}
+        className="w-full md:w-1/3 px-3 py-2 rounded bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+      />
+    </div>
+
+    {/* ===== Add Teacher Form ===== */}
+    <div className="mb-6 bg-gray-950 p-4 rounded">
+      <h4 className="text-lg font-semibold mb-2 text-cyan-300">
+        Add New Teacher
+      </h4>
+
+      <div className="flex flex-col md:flex-row gap-2">
+        <input
+          placeholder="Name"
+          name="name"
+          value={formData.name || ""}
+          onChange={handleFormChange}
+          className="text-white bg-gray-800 px-3 py-2 rounded w-full md:w-1/3"
+        />
+
+        <input
+          placeholder="Email"
+          name="email"
+          value={formData.email || ""}
+          onChange={handleFormChange}
+          className="text-white bg-gray-800 px-3 py-2 rounded w-full md:w-1/3"
+        />
+
+        <button
+          onClick={() => handleTeacherFormSubmit(null)}
+          className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded font-semibold"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+
+    {/* ===== Teacher Table ===== */}
+    <div className="overflow-x-auto">
+      <table className="min-w-full text-center border border-gray-800 bg-gray-950">
+        <thead className="bg-gray-900 text-cyan-300">
+          <tr>
+            <th className="p-2 border">Name</th>
+            <th className="p-2 border">Email</th>
+            <th className="p-2 border">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {teachers
+            .filter(t =>
+              t.name.toLowerCase().includes(searchName.toLowerCase())
+            )
+            .map((t) => (
+              <tr
+                key={t._id}
+                className="border-b border-gray-700 bg-gray-950"
+              >
+                {editingId === t._id ? (
+                  <>
+                    <td className="p-2 border">
+                      <input
+                        name="name"
+                        value={formData.name}
+                        onChange={handleFormChange}
+                        className="w-full px-2 py-1 rounded text-black"
+                      />
+                    </td>
+
+                    <td className="p-2 border">
+                      <input
+                        name="email"
+                        value={formData.email}
+                        onChange={handleFormChange}
+                        className="w-full px-2 py-1 rounded text-black"
+                      />
+                    </td>
+
+                    <td className="p-2 border flex justify-center gap-2">
+                      <button
+                        onClick={() => handleTeacherFormSubmit(t._id)}
+                        className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded font-semibold"
+                      >
+                        Save
+                      </button>
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td className="p-2 border">{t.name}</td>
+                    <td className="p-2 border">{t.email}</td>
+                    <td className="p-2 border flex justify-center gap-2">
+                      <button
+                        onClick={() => handleTeacherEditClick(t)}
+                        className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded font-semibold text-black"
+                      >
+                        Update
+                      </button>
+
+                      <button
+                        onClick={() => handleTeacherDelete(t._id)}
+                        className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded font-semibold"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+)}
+
 {activePage === "view-requests" && <TeacherRequestView userRole={"admin"} />}
         </div> 
       </div>
