@@ -8,7 +8,6 @@ import TeacherDashboard from "./pages/TeacherDashboard";
 import StudentTable from "./components/StudentTable";
 import TeacherTable from "./components/TeacherTable";
 import TimetableTable from "./components/TimetableTable";
-
 import ForgotPassword from "./pages/ForgotPassword";
 
 

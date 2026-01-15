@@ -4,20 +4,20 @@ import Sidebar from "../components/Sidebar";
 import API from "../api/axios";
 import HolidayCalendar from "../components/HolidayCalendar";
 import TeacherRequestView from "../components/TeacherRequestView";
+import RoleManagement from "../components/RoleManagement";
+
 export default function AdminDashboard() {
   const [activePage, setActivePage] = useState("manage-timetable");
   const [adminName, setAdminName] = useState("Admin");
   const times = ["9AM-10AM", "10AM-11AM", "11AM-12PM"];
   const subjects = ["Math", "Science", "English", "Hindi"];
-const [selectedDay, setSelectedDay] = useState("");
-  const [students, setStudents] = useState([]);
+const [selectedDay, setSelectedDay] = useState("All");
+  const [students, setStudents] = useState("All");
   const [teachers, setTeachers] = useState([]);
   const [error, setError] = useState("");
   const [timetable, setTimetable] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [searchName, setSearchName] = useState("");
-
-
   const defaultFormData = {
   day: "",
   slot1: { subject: "", time: "" },
@@ -30,12 +30,12 @@ const [formData, setFormData] = useState(defaultFormData);
 // Add these for time and subject
 const [selectedTime, setSelectedTime] = useState("");
 const [selectedSubject, setSelectedSubject] = useState("");
-const [filterSection, setFilterSection] = useState(""); // <--- ADD THIS
-const [filterClass, setFilterClass] = useState("")
+const [filterSection, setFilterSection] = useState("All"); // <--- ADD THIS
+const [filterClass, setFilterClass] = useState("All")
   const classes = ["1","2","3","4","5","6","7","8","9","10","11","12"];
   const sections = ["A", "B", "C", "D"];
-  const [selectedClass, setSelectedClass] = useState("");
-  const [selectedSection, setSelectedSection] = useState("");
+  const [selectedClass, setSelectedClass] = useState("All");
+  const [selectedSection, setSelectedSection] = useState("All");
   const [selectedTeacher, setSelectedTeacher] = useState("");
   // Existing state
   // =======================
@@ -86,7 +86,6 @@ const [filterClass, setFilterClass] = useState("")
       setTimetable((prev) =>
         prev.map((row) => (row._id === id ? res.data : row))
       );
-
     } else {
       const res = await API.post("/timetable/createTable", payload);
       setTimetable((prev) => [...prev, res.data]);
@@ -162,7 +161,6 @@ className: student.className,
 section: student.section,
 });
 };
-
 // Submit Add or Update student
 const handleStudentFormSubmit = async (id) => {
 try {
@@ -263,10 +261,13 @@ const handleTeacherFormSubmit = async (id) => {
         <h2 className="text-3xl font-extrabold mb-11 text-cyan-400 drop-shadow-lg">
           Welcome, {adminName}
         </h2>
-
+ {/* {activePage === "role-management" && <RoleManagement />}  */}
         {error && <p className="text-red-500 mb-4">{error}</p>}
 {activePage === "manage-timetable" && (
   <div>
+
+
+
     {/* ===== Timetable Form ===== */}
     <div className="bg-gray-950 p-6 rounded-xl mb-8 shadow-inner border border-gray-800">
       <h4 className="text-xl font-semibold text-cyan-300 mb-4">
@@ -283,95 +284,37 @@ const handleTeacherFormSubmit = async (id) => {
           className="p-3 rounded-lg w-full text-white bg-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
         />
 
-        {/* SLOT 1 */}
-        <div className="flex flex-col">
-          <input
-            placeholder="Slot 1 Subject"
-            value={formData.slot1.subject}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                slot1: { ...formData.slot1, subject: e.target.value },
-              })
-            }
-            className="p-3 rounded-lg bg-gray-800 text-white mb-2"
-          />
-          <select
-            value={formData.slot1.time}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                slot1: { ...formData.slot1, time: e.target.value },
-              })
-            }
-            className="p-3 rounded-lg bg-blue-600 text-black"
-          >
-            <option value="">Select Time</option>
-            {["9:00AM - 10:00AM","10:00AM - 11:00AM","11:00AM - 12:00PM","12:00PM - 1:00PM","1:00PM - 2:00PM","2:00PM - 3:00PM","3:00PM - 4:00PM"].map(time=>(
-              <option key={time} value={time}>{time}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* SLOT 2 */}
-        <div className="flex flex-col">
-          <input
-            placeholder="Slot 2 Subject"
-            value={formData.slot2.subject}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                slot2: { ...formData.slot2, subject: e.target.value },
-              })
-            }
-            className="p-3 rounded-lg bg-gray-800 text-white mb-2"
-          />
-          <select
-            value={formData.slot2.time}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                slot2: { ...formData.slot2, time: e.target.value },
-              })
-            }
-            className="p-3 rounded-lg bg-blue-600 text-black"
-          >
-            <option value="">Select Time</option>
-            {["9:00AM - 10:00AM","10:00AM - 11:00AM","11:00AM - 12:00PM","12:00PM - 1:00PM","1:00PM - 2:00PM","2:00PM - 3:00PM","3:00PM - 4:00PM"].map(time=>(
-              <option key={time} value={time}>{time}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* SLOT 3 */}
-        <div className="flex flex-col">
-          <input
-            placeholder="Slot 3 Subject"
-            value={formData.slot3.subject}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                slot3: { ...formData.slot3, subject: e.target.value },
-              })
-            }
-            className="p-3 rounded-lg bg-gray-800 text-white mb-2"
-          />
-          <select
-            value={formData.slot3.time}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                slot3: { ...formData.slot3, time: e.target.value },
-              })
-            }
-            className="p-3 rounded-lg bg-blue-600 text-black"
-          >
-            <option value="">Select Time</option>
-            {["9:00AM - 10:00AM","10:00AM - 11:00AM","11:00AM - 12:00PM","12:00PM - 1:00PM","1:00PM - 2:00PM","2:00PM - 3:00PM","3:00PM - 4:00PM"].map(time=>(
-              <option key={time} value={time}>{time}</option>
-            ))}
-          </select>
-        </div>
+        {/* SLOT 1, SLOT 2, SLOT 3 */}
+        {["slot1","slot2","slot3"].map((slot, idx) => (
+          <div key={idx} className="flex flex-col">
+            <input
+              placeholder={`Slot ${idx + 1} Subject`}
+              value={formData[slot].subject}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  [slot]: { ...formData[slot], subject: e.target.value }
+                })
+              }
+              className="p-3 rounded-lg bg-gray-800 text-white mb-2"
+            />
+            <select
+              value={formData[slot].time}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  [slot]: { ...formData[slot], time: e.target.value }
+                })
+              }
+              className="p-3 rounded-lg bg-blue-600 text-black"
+            >
+              <option value="">Select Time</option>
+              {["9:00AM - 10:00AM","10:00AM - 11:00AM","11:00AM - 12:00PM","12:00PM - 1:00PM","1:00PM - 2:00PM","2:00PM - 3:00PM","3:00PM - 4:00PM"].map(time=>(
+                <option key={time} value={time}>{time}</option>
+              ))}
+            </select>
+          </div>
+        ))}
 
         {/* Class */}
         <input
@@ -391,7 +334,7 @@ const handleTeacherFormSubmit = async (id) => {
           className="p-3 rounded-lg bg-gray-800 text-white"
         />
 
-        {/* Submit */}
+        {/* Submit Button */}
         <button
           onClick={() => handleFormSubmit(editingId)}
           className="bg-green-600 hover:bg-green-700 text-black font-bold px-6 py-3 rounded-lg"
@@ -433,31 +376,26 @@ const handleTeacherFormSubmit = async (id) => {
 
         <tbody>
           {timetable
-            // ✅ Fix for All Days filter
-            .filter(row =>
-              selectedDay === "All" ? true : row.day?.trim() === selectedDay
-            )
+            .filter(row => selectedDay === "All" ? true : row.day?.trim() === selectedDay)
             .map(row => (
-              <tr key={row._id} className="bg-gray-950 border-b border-gray-700">
-                <td className="p-2 border">{row.day}</td>
-                <td className="p-2 border">{row.slot1?.subject} <br /> {row.slot1?.time}</td>
-                <td className="p-2 border">{row.slot2?.subject} <br /> {row.slot2?.time}</td>
-                <td className="p-2 border">{row.slot3?.subject} <br /> {row.slot3?.time}</td>
-                <td className="p-2 border">{row.classRef?.className}</td>
-                <td className="p-2 border">{row.classRef?.section}</td>
-                <td className="p-2 border flex gap-2 justify-center">
-                  <button onClick={() => handleEditClick(row)} className="bg-yellow-500 px-3 py-1 rounded">Edit</button>
-                  <button onClick={() => handleDelete(row._id)} className="bg-red-600 px-3 py-1 rounded">Delete</button>
-                </td>
-              </tr>
+            <tr key={row._id} className="bg-gray-950 border-b border-gray-700">
+              <td className="p-2 border">{row.day}</td>
+              <td className="p-2 border">{row.slot1?.subject} <br /> {row.slot1?.time}</td>
+              <td className="p-2 border">{row.slot2?.subject} <br /> {row.slot2?.time}</td>
+              <td className="p-2 border">{row.slot3?.subject} <br /> {row.slot3?.time}</td>
+              <td className="p-2 border">{row.classRef?.className}</td>
+              <td className="p-2 border">{row.classRef?.section}</td>
+              <td className="p-2 border flex gap-2 justify-center">
+                <button onClick={() => handleEditClick(row)} className="bg-yellow-500 px-3 py-1 rounded">Edit</button>
+                <button onClick={() => handleDelete(row._id)} className="bg-red-600 px-3 py-1 rounded">Delete</button>
+              </td>
+            </tr>
           ))}
         </tbody>
       </table>
     </div>
   </div>
 )}
-
-
 
 
 {activePage === "assign-class" && (
@@ -886,7 +824,6 @@ const handleTeacherFormSubmit = async (id) => {
                         className="w-full px-2 py-1 rounded text-black"
                       />
                     </td>
-
                     <td className="p-2 border flex justify-center gap-2">
                       <button
                         onClick={() => handleTeacherFormSubmit(t._id)}
@@ -924,6 +861,8 @@ const handleTeacherFormSubmit = async (id) => {
     </div>
   </div>
 )}
+{activePage === "role-management" && <RoleManagement />}
+
 
 {activePage === "view-requests" && <TeacherRequestView userRole={"admin"} />}
         </div> 
@@ -931,5 +870,6 @@ const handleTeacherFormSubmit = async (id) => {
     </div>
   );
 }
+
 
 

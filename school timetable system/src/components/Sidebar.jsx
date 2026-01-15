@@ -9,7 +9,8 @@ import {
   BookOpen, 
   Settings, 
   LogOut,
-  ListChecks
+  ListChecks,
+  ShieldCheck
 } from "lucide-react";
 
 export default function Sidebar({ userRole, setActivePage }) {
@@ -25,6 +26,7 @@ export default function Sidebar({ userRole, setActivePage }) {
       { id: "assign-class", label: "Assign Class", icon: BookOpen },
       { id: "manage-holiday", label: "Manage Holiday", icon: CalendarDays },
       { id: "view-requests", label: "Teacher Request", icon: ListChecks },
+     { id: "role-management", label: "Role Management", icon: ShieldCheck },
     ];
   } 
   
