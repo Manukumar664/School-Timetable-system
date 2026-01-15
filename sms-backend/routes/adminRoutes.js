@@ -12,6 +12,7 @@ const Class = require("../models/Class");
 // =========================
 // 🟢 Register new user (public)
 // =========================
+
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -356,5 +357,7 @@ router.get("/teachers", protect, authorizeRoles("admin"), async (req, res) => {
     res.status(500).json({ success: false, message: "Server error while fetching teachers", error: err.message });
   }
 });
+
+
 
 module.exports = router;
